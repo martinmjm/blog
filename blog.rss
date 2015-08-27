@@ -1,0 +1,53 @@
+<?php
+header('Content-type: application/xml; charset=utf-8');
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+echo "\n";
+?>
+<rss 
+ version="2.0"
+ xmlns:atom="http://www.w3.org/2005/Atom"
+>
+<?php
+    include('/var/www/dbsetup.php');
+    date_default_timezone_set('Europe/London'); 
+   $CON = mysql_connect("localhost",$MYSQLUSERNAME,$MYSQLPASSWORD);
+   if (!$CON)
+      { die("Error connecting to database"); }
+   mysql_query("use blogo",$CON);
+   $MQ = "SELECT UNIX_TIMESTAMP(MAX(ETime)) AS Maxtime FROM " . 
+           "(SELECT EntrTime AS ETime FROM tblEntries WHERE active=1 UNION " .
+             "SELECT CommTime AS ETime FROM tblComm WHERE active=1) AS tmptblEntrUComm";
+   $ROW = mysql_fetch_array(mysql_query($MQ,$CON));
+   $MAXTIME = $ROW['Maxtime'];
+?>
+
+<channel>
+<title>Martin's Blog</title>
+<link>http://marteno.eu/blog/</link>
+<description>This is my blog where I am describing everything I am learning about programming</description>
+<atom:link href="http://marteno.eu/blog/blog.rss" rel="self" type="application/rss+xml" />
+<pubDate><?php echo  date(DATE_RSS,$MAXTIME); ?></pubDate>
+<lastBuildDate><?php echo  date(DATE_RSS,$MAXTIME); ?></lastBuildDate>
+<generator>php</generator>
+
+<?php
+   $MQ = "SELECT EntrID,UNIX_TIMESTAMP(EntrTime) AS UEntrTime,Title,LEFT(EntrText,160) AS Descr FROM tblEntries WHERE active=1 ORDER BY EntrID DESC  LIMIT 10";
+   if(!($RESULT = mysql_query($MQ,$CON)))
+   { die("RSS Query Failed"); };
+   while ($ROW = mysql_fetch_array($RESULT))
+   {
+     echo "<item>\n";
+
+     echo "  <title>" . strip_tags($ROW['Title']) . "</title>\n";
+     echo "  <link>http://marteno.eu/blog/index.php?EID=" . $ROW['EntrID'] . "</link>\n";
+     echo "  <guid>http://marteno.eu/blog/index.php?EID=" . $ROW['EntrID'] . "</guid>\n";
+     echo "  <description>" . str_replace(array("\n","\r"), " ", strip_tags($ROW['Descr'])) . "</description>\n";
+     echo "  <pubDate>" .  date(DATE_RSS,$ROW['UEntrTime']) . "</pubDate>\n";
+
+     echo "</item>\n";
+   }
+   
+   mysql_close($CON);
+?>
+</channel>
+</rss>

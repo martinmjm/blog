@@ -1,0 +1,79 @@
+body {
+  background-color:teal;
+}
+div {
+ /* border:1pt green solid; */
+  background-color:lightgreen;
+}
+#left {
+  float:left;
+  width:40%;
+  font-size:13px;
+  font-family:Calibri,sans-serif;
+}
+#left a { text-decoration:none; }
+#article {
+  width:56%;
+  float:right;
+  font-family:Palatino,serif;
+  padding-left:20px;
+  padding-right:10px;
+}
+.mok {
+  font-size:10pt;
+  color:grey;
+}
+.err {
+  font-size:11pt;
+  color:red;
+}
+.comtime {
+  font-size:10pt;
+  color:darkblue;
+  display:inline;
+  position:left;
+}
+.comname {
+  font-size:11pt;
+  color:black;
+  display:inline;
+  position:right;
+}
+.comtext {
+  font-size:12pt;
+  color:navy;
+}
+.ncomtime {
+  font-size:9pt;
+  color:darkblue;
+  display:inline;
+  position:left;
+}
+.ncomname {
+  font-size:9pt;
+  color:black;
+  display:inline;
+  position:right;
+}
+.ncomtitle {
+  font-size:9pt;
+  color:navy;
+  font-weight:bold;
+  margin-top:1pt;
+  margin-bottom:1pt;
+}
+.ncomstart {
+  font-size:12pt;
+  font-size:9pt;
+  color:navy;
+  margin-top:1pt;
+  margin-bottom:1pt;
+}
+.onecom {
+  background-color:skyblue;
+  padding:15px 5px 15px 5px;
+}
+.newcom {
+  background-color:skyblue;
+  padding:15px 5px 15px 5px;
+}
